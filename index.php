@@ -5,9 +5,11 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 
 if($method == 'GET'){
+    $con = new PDO("mysql:host=localhost;dbname=mydb",'root','');
+
+
     if(isset($_GET['email'])){
         try{
-            $con = new PDO("mysql:host=localhost;dbname=mydb",'root','');
             $stm = $con->prepare('select * from contatos where email = :email;');
             $stm->execute(array('email' => $_GET['email']));
 
@@ -24,7 +26,6 @@ if($method == 'GET'){
     }
    if(isset($_GET['nome'])){
         try{
-            $con = new PDO("mysql:host=localhost;dbname=mydb",'root','');
             $stm = $con->prepare('select * from contatos where match(nome,sobrenome) against (:nome);');
             $stm->execute(array('nome' => $_GET['nome']));
 
@@ -39,7 +40,6 @@ if($method == 'GET'){
         
    }
    try{
-        $con = new PDO("mysql:host=localhost;dbname=mydb",'root','');
         $stm = $con->prepare('Select * from contatos');
         $stm->execute();
 
