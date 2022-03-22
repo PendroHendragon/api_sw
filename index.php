@@ -24,6 +24,22 @@ if($method == 'GET'){
 
 
     }
+    if(isset($_GET['nasc'])){
+        try{
+            $stm = $con->prepare('select * from contatos where dataNascimento = :datanasc;');
+            $stm->execute(array('datanasc' => $_GET['nasc']));
+
+            $result = $stm->fetchAll(PDO::FETCH_OBJ);
+            echo json_encode($result);
+            
+            exit;
+        }catch(PDOExcepition $e){
+            echo 'ERROR:'.$e->getMessage();
+
+        }
+
+
+    }
     if(isset($_GET['empresa'])){
         try{
             $stm = $con->prepare('select * from empresa');
@@ -40,7 +56,7 @@ if($method == 'GET'){
     }
    if(isset($_GET['nome'])){
         try{
-            $stm = $con->prepare('select * from contatos where match(nome,sobrenome) against (:nome);');
+            $stm = $con->prepare('select * from (contatos inner join empresa on contatos.Empresa_idEmpresa = empresa.idEmpresa,empresa where match(nome,sobrenome) against (:nome);');
             $stm->execute(array('nome' => $_GET['nome']));
 
             $result = $stm->fetchAll(PDO::FETCH_OBJ);
