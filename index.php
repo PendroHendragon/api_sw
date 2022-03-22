@@ -24,6 +24,20 @@ if($method == 'GET'){
 
 
     }
+    if(isset($_GET['empresa'])){
+        try{
+            $stm = $con->prepare('select * from empresa');
+            $stm->execute();
+
+            $result = $stm->fetchAll(PDO::FETCH_OBJ);
+            echo json_encode($result);
+            
+            exit;
+        }catch(PDOExcepition $e){
+            echo 'ERROR:'.$e->getMessage();
+
+        }
+    }
    if(isset($_GET['nome'])){
         try{
             $stm = $con->prepare('select * from contatos where match(nome,sobrenome) against (:nome);');
