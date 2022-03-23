@@ -84,13 +84,61 @@ if($method == 'GET'){
   
 }
 if($method == "DELETE"){
-    echo $_GET['nome'];
-
+    $con = new PDO("mysql:host=localhost;dbname=mydb",'root','');
+    if(isset($_GET['id'])){
+        try{
+            $stm = $con->prepare('Delete from contatos where idContatos=:id');
+            $stm->execute(array('id'=> $_GET['id']));
+    
+            // $result = $stm->fetchAll(PDO::FETCH_OBJ);
+    
+            echo json_encode(array('request'=> 'ok'));
+            exit;
+       }catch(PDOExcepition $e){
+           echo 'ERROR:'.$e->getMessage();
+    
+       }
+    }
 }
 if($method == 'POST'){
+    $con = new PDO("mysql:host=localhost;dbname=mydb",'root','');
+    $id = $_POST['id'];
+    $nome = $_POST['nome'];
+    
+    if(isset($_GET['id'])){
+        try{
+            $stm = $con->prepare('Delete from contatos where idContatos=:id');
+            $stm->execute(array('id'=> $_GET['id']));
+    
+            // $result = $stm->fetchAll(PDO::FETCH_OBJ);
+    
+            echo json_encode(array('request'=> 'ok'));
+            exit;
+       }catch(PDOExcepition $e){
+           echo 'ERROR:'.$e->getMessage();
+    
+       }
+    }
 
 }
 if($method == "PUT"){
+    $con = new PDO("mysql:host=localhost;dbname=mydb",'root','');
+    $id = $_GET['id'];
+    if(isset($_GET['nome'])){
+        try{
+            $stm = $con->prepare('Update contatos set nome = :nome where idContatos = :id');
+            $stm->execute(array('nome'=> $_GET['nome'], 'id'=> $_GET['id']));
+    
+            // $result = $stm->fetchAll(PDO::FETCH_OBJ);
+    
+            echo json_encode(array('request'=> 'ok'));
+            exit;
+       }catch(PDOExcepition $e){
+           echo 'ERROR:'.$e->getMessage();
+    
+       }
+
+    }
 
 }
 
